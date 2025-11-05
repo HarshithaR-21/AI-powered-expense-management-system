@@ -11,7 +11,8 @@ import {
     User,
     Receipt,
     TrendingUp,
-    Notebook
+    Notebook,
+    Sparkles
 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AddExpenseModal from '../components/AddExpenseModal';
@@ -39,6 +40,7 @@ function OpenPlan() {
         individualShares: {},
     });
 
+    const [aiResponse, setAIResponse] = useState("");
     const [user, setuser] = useState("");
     const userRef = useRef(false);
     useEffect(() => {
@@ -47,7 +49,7 @@ function OpenPlan() {
         async function getUser() {
             let response = await axios.get('http://localhost:8080/user/getUser', { withCredentials: true });
             setuser(response.data.userDetails);
-            console.log(response.data.userDetails);
+            //console.log(response.data.userDetails);
         }
         getUser();
     }, []);
@@ -162,12 +164,25 @@ function OpenPlan() {
             if (response) {
                 setFetchedExpense(response.data.fetchedExpense);
                 toast.success(response.data.message || "Expense details fetched successfully");
-                console.log("Fetched Expense Details:\n", response.data.fetchedExpense);
+                //console.log("Fetched Expense Details:\n", response.data.fetchedExpense);
             }
         }
         catch (error) {
             console.error("Error fetching expense details:", error);
             toast.error(error?.response?.data?.message || "Failed to fetch expense details");
+        }
+    }
+    const handleAIChat = async () => {
+        try{
+            const response = await axios.post('http://localhost:8080/api/ai-response', {
+                plan
+            }, { withCredentials: true });
+            setAIResponse(response.data.reply);
+            console.log("AI Response:", response.data.reply);
+        }
+        catch(error){
+            console.error("Error in AI Chat:", error);
+            toast.error("Failed to get AI summary");
         }
     }
 
@@ -211,7 +226,7 @@ function OpenPlan() {
         // Prepare creditors and debtors
         let creditors = [];
         let debtors = [];
-        console.log(netBalance);
+        //console.log(netBalance);
         Object.entries(netBalance).forEach(([name, balance]) => {
             if (balance > 0) creditors.push({ name, balance });
             else if (balance < 0) debtors.push({ name, balance });
@@ -430,6 +445,7 @@ function OpenPlan() {
                                             ))}
                                         </div>
                                     )}
+                                <div title='AI summary' className='flex justify-end mt-2' onClick={() => handleAIChat(settlements)}>Get Summary By AI<Sparkles className='ml-1'></Sparkles></div>
                                 </motion.div>
                             )}
                         </AnimatePresence>

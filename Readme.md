@@ -1,86 +1,109 @@
-# EquiShare
+# AI-powered Expense Management System
 
-EquiShare is a web application that helps groups of friends or colleagues easily split expenses, track payments, and settle up. Whether you’re planning a trip, sharing rent, or managing group activities, EquiShare makes expense sharing simple and transparent.
+AI-powered Expense Management System is a web application that helps groups of friends or colleagues easily split expenses, track payments, and settle up. It includes AI-generated summaries and insights to make expense tracking clearer and more actionable.
 
 ## Features
 
-- **Create Plans:** Start a new plan for any event or group activity.
-- **Add Friends:** Invite friends to join your plan.
-- **Add Expenses:** Log group expenses with options for equal or custom shares, and individual payments.
-- **Automatic Settlements:** Instantly calculate who owes whom and how much.
-- **Expense Details:** View detailed breakdowns of each expense.
-- **Edit & Delete:** Modify or remove expenses and plans as needed.
+- Create plans for events or shared activities
+- Add friends / members to a plan
+- Add expenses: group (equal / different) or individual payments
+- Automatic settlement calculation (who owes whom)
+- AI-generated summaries & insights for expense history
+- View, edit, and delete expenses and plans
 
 ## Tech Stack
 
-- **Frontend:** React.js (with hooks), Axios, CSS
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB (Mongoose ODM)
+- Frontend: React.js (hooks), Axios, TailwindCSS
+- Backend: Node.js, Express.js
+- Database: MongoDB (Mongoose)
+- AI Integration: OpenAI API (optional features)
 
-## Getting Started
+## Quick Start
 
 ### Prerequisites
-
-- Node.js and npm installed
-- MongoDB running locally or a MongoDB Atlas account
+- Node.js & npm
+- MongoDB (local or Atlas)
 - Git
 
-### Installation
-
-1. **Clone the repository:**
+### Install
+1. Clone the repository:
    ```sh
    git clone <your-repo-url>
-   cd EquiShare\ Website
+   cd <project-directory>
    ```
 
-2. **Install backend dependencies:**
+2. Install backend dependencies:
    ```sh
    cd server
    npm install
    ```
 
-3. **Install frontend dependencies:**
+3. Install frontend dependencies:
    ```sh
-   cd ../client/equishare
+   cd ../client
    npm install
    ```
 
-4. **Set up environment variables:**
-   - Create a `.env` file in the `server` directory with your MongoDB URI and any other secrets.
+### Environment
+Create a `.env` in the `server` folder:
+```
+MONGO_URI=<your-mongodb-connection-string>
+PORT=8080
+JWT_SECRET=<your-jwt-secret>
+OPENAI_API_KEY=<your-openai-api-key>   # optional
+```
+(Optional) create `REACT_APP_API_BASE_URL` in client env if needed:
+```
+REACT_APP_API_BASE_URL=http://localhost:8080
+```
 
-5. **Start the backend:**
-   ```sh
-   cd server
-   npm start
-   ```
+### Run (development)
+Start backend:
+```sh
+cd server
+npm run dev
+```
+Start frontend:
+```sh
+cd ../client
+npm start
+```
+Open: http://localhost:3000
 
-6. **Start the frontend:**
-   ```sh
-   cd ../client/equishare
-   npm start
-   ```
+## API Endpoints (examples)
+- POST /auth/register
+- POST /auth/login
+- POST /plan/add-plan
+- GET /plan/get-plans
+- GET /plan/get-plan/:id
+- POST /expense/add-expense/:planId
+- GET /expense/get-expense/:expenseId
+- GET /expense/get-expenses/:planId
+- DELETE /expense/delete-expense/:expenseId
 
-7. **Open your browser and visit:**
-   ```
-   http://localhost:3000
-   ```
+(See server/controllers for request/response schemas)
 
-## Usage
+## Testing
+- Backend tests (if present): `cd server && npm test`
+- Frontend tests: `cd client && npm test`
 
-1. **Register/Login** to your account.
-2. **Create a new plan** and add friends.
-3. **Add expenses** as they occur, specifying who paid and how the cost is split.
-4. **View settlements** to see who owes whom.
-5. **Settle up** and keep your group finances transparent!
+## Troubleshooting
+- fatal: 'origin' does not appear to be a git repository — add remote:
+  ```sh
+  git remote add origin <repo-url>
+  git push -u origin main
+  ```
+- Wrong expense fetched — ensure backend uses `Model.findById(id)` and frontend sends correct `_id`.
+- Settlement infinite loop — ensure numeric balances and use `Math.min(creditor, -debtor)` when matching.
 
 ## Contributing
-
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+1. Fork
+2. Create branch: `git checkout -b feat/your-feature`
+3. Commit & push
+4. Open a PR
 
 ## License
+MIT — see LICENSE file.
 
-[MIT](LICENSE)
-
----
-
-**EquiShare** – Making group expenses fair and easy!
+## Contact
+Open an issue in the repository for bugs or feature requests.

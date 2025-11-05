@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { motion } from "framer-motion"
 import InputField from "../components/InputField"
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function LoginPage() {
@@ -101,7 +101,7 @@ export default function LoginPage() {
               whileTap={{ scale: 0.95 }}
               className="px-4 py-2 text-sm font-medium text-blue-900 hover:text-blue-700 transition-colors"
             >
-              Sign Up
+              <Link to={'/signup'}>Sign Up</Link>
             </motion.button>
           </div>
         </div>

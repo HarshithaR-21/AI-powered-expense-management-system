@@ -109,7 +109,7 @@ export default function HomePage() {
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-3 text-lg font-medium bg-blue-900 text-white rounded-md shadow-md hover:bg-blue-900 transition"
               >
-                Get Started
+                <Link to={'/signup'}>Get Started</Link>
               </motion.button>
             </div>
           </motion.div>
@@ -204,7 +204,7 @@ export default function HomePage() {
           whileTap={{ scale: 0.95 }}
           className="px-8 py-3 text-lg font-medium bg-white text-[#374151] rounded-md shadow hover:bg-gray-100"
         >
-          Start Splitting Today
+          <Link to={'/signup'}>Start Splitting Today</Link>
         </motion.button>
       </section>
 
