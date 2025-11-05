@@ -1,4 +1,4 @@
-# AI-powered Expense Management System
+# AI-powered Expense Management System - Equishare
 
 AI-powered Expense Management System is a web application that helps groups of friends or colleagues easily split expenses, track payments, and settle up. It includes AI-generated summaries and insights to make expense tracking clearer and more actionable.
 

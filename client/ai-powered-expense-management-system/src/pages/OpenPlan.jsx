@@ -41,6 +41,7 @@ function OpenPlan() {
     });
 
     const [aiResponse, setAIResponse] = useState("");
+    const [loadingAI, setLoadingAI] = useState(false);
     const [user, setuser] = useState("");
     const userRef = useRef(false);
     useEffect(() => {
@@ -173,18 +174,23 @@ function OpenPlan() {
         }
     }
     const handleAIChat = async () => {
-        try{
+        setLoadingAI(true);  // Add this
+        try {
             const response = await axios.post('http://localhost:8080/api/ai-response', {
                 plan
             }, { withCredentials: true });
             setAIResponse(response.data.reply);
             console.log("AI Response:", response.data.reply);
+            toast.success("AI summary generated!");  // Add this
         }
-        catch(error){
+        catch (error) {
             console.error("Error in AI Chat:", error);
             toast.error("Failed to get AI summary");
+        } finally {
+            setLoadingAI(false);  // Add this
         }
     }
+
 
 
     function calculateSettlements() {
@@ -445,7 +451,58 @@ function OpenPlan() {
                                             ))}
                                         </div>
                                     )}
-                                <div title='AI summary' className='flex justify-end mt-2' onClick={() => handleAIChat(settlements)}>Get Summary By AI<Sparkles className='ml-1'></Sparkles></div>
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        onClick={() => handleAIChat()}
+                                        disabled={loadingAI || settlements.length === 0}
+                                        className={`flex items-center justify-center gap-2 w-full mt-4 px-4 py-3 rounded-lg font-medium transition-all ${loadingAI || settlements.length === 0
+                                                ? 'bg-muted text-muted-foreground cursor-not-allowed'
+                                                : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl'
+                                            }`}
+                                    >
+                                        {loadingAI ? (
+                                            <>
+                                                <motion.div
+                                                    animate={{ rotate: 360 }}
+                                                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                                >
+                                                    <Sparkles className="w-4 h-4" />
+                                                </motion.div>
+                                                <span>Generating Summary...</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Sparkles className="w-4 h-4" />
+                                                <span>Get AI Summary</span>
+                                            </>
+                                        )}
+                                    </motion.button>
+
+                                    {aiResponse && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            transition={{ duration: 0.4 }}
+                                            className="mt-4 bg-purple-50 p-5 rounded-lg border-2 dark:border-purple-800/60"
+                                        >
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <motion.div
+                                                    animate={{
+                                                        scale: [1, 1.2, 1],
+                                                        rotate: [0, 5, -5, 0]
+                                                    }}
+                                                    transition={{ duration: 2, repeat: Infinity }}
+                                                >
+                                                    <Sparkles className="w-5 h-5 text-purple-600" />
+                                                </motion.div>
+                                                <h4 className="font-semibold">AI Summary</h4>
+                                            </div>
+                                            <div className="text-sm whitespace-pre-wrap leading-relaxed">
+                                                {aiResponse}
+                                            </div>
+                                        </motion.div>
+                                    )}
                                 </motion.div>
                             )}
                         </AnimatePresence>

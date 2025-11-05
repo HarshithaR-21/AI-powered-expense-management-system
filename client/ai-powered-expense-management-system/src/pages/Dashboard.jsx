@@ -252,7 +252,7 @@ function Dashboard() {
               </div>
 
               <div className="flex items-center justify-between pt-4 border-t">
-                <span className="text-xs text-gray-500">Created: {new Date(plan.createdDate).toLocaleDateString()}</span>
+                <span className="text-xs text-gray-500">Created: {new Date(plan.createdDate).toLocaleDateString('en-GB')}</span>
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => handleEditButton(plan)}
